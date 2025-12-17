@@ -62,6 +62,21 @@ CREATE TABLE IF NOT EXISTS orders (
 
 );
 
+CREATE TABLE IF NOT EXISTS announcements (
+  id            INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  title         VARCHAR(200) NOT NULL,
+  content       TEXT NOT NULL,
+  status        ENUM('draft','published','archived') NOT NULL DEFAULT 'draft',
+  visible_from  DATETIME NULL,
+  visible_to    DATETIME NULL,
+  created_by    INT UNSIGNED NULL,          -- 哪個 admin 建的
+  created_at    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at    DATETIME NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY idx_status (status),
+  KEY idx_visible (visible_from, visible_to)
+);
+
 CREATE TABLE IF NOT EXISTS order_status_logs (
   log_id      INT UNSIGNED NOT NULL AUTO_INCREMENT,
   order_id    INT UNSIGNED NOT NULL,
